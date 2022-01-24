@@ -24,4 +24,4 @@ def register(request):
             return redirect('accounts:login')
     else:
         form = UserForm()
-    return render(request, 'register/register.html')
+    return render(request, 'register/register.html',{'form': form})
