@@ -49,8 +49,3 @@ def delete(request):
         return redirect('posts:list')
     return render(request, 'delete/delete.html')
 
-
-
-
-       
->>>>>>> 김란희
