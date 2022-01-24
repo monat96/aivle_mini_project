@@ -6,9 +6,8 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm, Password
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
-
-
 # Create your views here.
+
 
 @csrf_exempt
 def register(request):
@@ -26,21 +25,18 @@ def register(request):
             return redirect('accounts:login')
     else:
         form = CustomUserForm()
-    return render(request, 'register/register.html', {'form' : form })
+    return render(request, 'register/register.html', {'form': form})
 
 
 @login_required
 def update(request):
-    if request.method == "POST": #Post -> 수정한 내용 업데이트, Get -> 기존 데이터 instance 담아서 폼을 html넘김
-        form = UserChangeForm(request.POST, instance = request.user)
+    if request.method == "POST":  #Post -> 수정한 내용 업데이트, Get -> 기존 데이터 instance 담아서 폼을 html넘김
+        form = UserChangeForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
             return redirect('upadate/update_complete.html', request.user)
-        return render(
-            request, 
-            'update/update.html', 
-            {'form': form }
-            )
+        return render(request, 'update/update.html', {'form': form})
+
 
 @login_required
 def delete(request):
@@ -48,4 +44,3 @@ def delete(request):
         request.user.delete()
         return redirect('posts:list')
     return render(request, 'delete/delete.html')
-
