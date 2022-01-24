@@ -60,11 +60,19 @@
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
               <a class="nav-link" href="#"><i class="fa fa-search"></i></a>
-            </li>
-            <li class="nav-item"><a class="nav-link" href="#">login</a></li>
-            <li class="nav-item">
-              <a class="nav-link active" href="#">register</a>
-            </li>
+              {% if user.is_authenticated %}
+              <li>
+                {{ user.username }} 님
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="{% url 'member:logout' %}">logout</a>
+              </li>
+            {% else %}
+              <li class="nav-item">
+                <a class="nav-link active" href="/accounts/login/">login</a>
+              </li>
+              <li class="nav-item"><a class="nav-link" href="/accounts/register/">register</a></li>
+            {% endif %}
           </ul>
         </div>
       </div>
@@ -72,6 +80,8 @@
     <!-- End: Navigation Clean --><!-- Start: Login Form Clean -->
     <section class="login-clean">
       <form method="post" style="max-width: 440px">
+        {% csrf_token %}
+        {% include "form_errors.html" %}
         <div class="illustration"><i class="icon ion-ios-navigate"></i></div>
         <div class="mb-3">
           <label class="form-label">이메일 주소</label
@@ -79,7 +89,8 @@
             class="form-control"
             type="email"
             name="email"
-            placeholder="Email"
+            id="email"
+            value="{{ form.email.value | default_if_none:'' }}"
           />
         </div>
         <div class="mb-3">
@@ -88,7 +99,8 @@
             class="form-control"
             type="text"
             name="nickname"
-            placeholder="Nickname"
+            id="nickname"
+            value="{{ form.nickname.value | default_if_none:'' }}"
           />
           <ul style="font-size: 10px; padding-left: 12px; padding-top: 3px">
             <li style="font-size: 11px">나를 표현할 닉네임을 입력해주세요.</li>
@@ -99,8 +111,9 @@
           ><input
             class="form-control"
             type="password"
-            name="password"
-            placeholder="Password"
+            name="password1"
+            id="password1"
+            value="{{ form.password1.value | default_if_none:'' }}"
           />
           <div>
             <ul style="font-size: 11px; padding-left: 12px; padding-top: 3px">
@@ -115,8 +128,9 @@
           ><input
             class="form-control"
             type="password"
-            name="confirm password"
-            placeholder="Confirm Password"
+            name="confirm password2"
+            id="password2"
+            value="{{ form.password2.value | default_if_none:'' }}"
           />
           <ul style="font-size: 10px; padding-left: 12px; padding-top: 3px">
             <li style="font-size: 11px">
@@ -129,7 +143,7 @@
             Register Now
           </button>
         </div>
-        <a class="forgot" href="#">계정이 이미 있으신가요? 로그인 하러가기</a>
+        <a class="forgot" href="/accounts/login/">계정이 이미 있으신가요? 로그인 하러가기</a>
       </form>
     </section>
     <!-- End: Login Form Clean --><!-- Start: Footer Basic -->

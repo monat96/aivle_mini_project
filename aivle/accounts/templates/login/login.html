@@ -65,10 +65,19 @@
             <li class="nav-item">
               <a class="nav-link" href="#"><i class="fa fa-search"></i></a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link active" href="#">login</a>
-            </li>
-            <li class="nav-item"><a class="nav-link" href="#">register</a></li>
+            {% if user.is_authenticated %}
+              <li>
+                {{ user.username }} 님
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="{% url 'member:logout' %}">logout</a>
+              </li>
+            {% else %}
+              <li class="nav-item">
+                <a class="nav-link active" href="/accounts/login/">login</a>
+              </li>
+              <li class="nav-item"><a class="nav-link" href="/accounts/register/">register</a></li>
+            {% endif %}
           </ul>
         </div>
       </div>
@@ -76,6 +85,8 @@
     <!-- End: Navigation Clean --><!-- Start: Login Form Clean -->
     <section class="login-clean">
       <form method="post" style="max-width: 440px">
+        {% csrf_token %}
+        {% include "form_errors.html" %}
         <div class="illustration"><i class="icon ion-ios-navigate"></i></div>
         <div class="mb-3">
           <label class="form-label">이메일 주소</label
@@ -83,7 +94,8 @@
             class="form-control"
             type="email"
             name="email"
-            placeholder="Email"
+            id="email"
+            value="{{ form.email.value | default_if_none:'' }}"
           />
         </div>
         <div class="mb-3">
@@ -92,17 +104,18 @@
             class="form-control"
             type="password"
             name="password"
-            placeholder="Password"
+            id="password"
+            value="{{ form.password.value | default_if_none:'' }}"
           />
         </div>
         <div class="mb-3">
           <button class="btn btn-primary d-block w-100" type="submit">
-            Log In
+            로그인
           </button>
         </div>
         <div>
-          <a class="forgot" href="#">계정이 없은신가요? 회원가입을 해보세요.</a
-          ><a class="forgot" href="#">비밀번호를 잊었나요? 비밀번호 찾기</a>
+          <a class="forgot" href="/accounts/register/">계정이 없은신가요? 회원가입을 해보세요.</a
+          ><br><a class="forgot" href="#">비밀번호를 잊었나요? 비밀번호 찾기</a>
         </div>
       </form>
     </section>
