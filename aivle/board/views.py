@@ -66,13 +66,13 @@ def notice_detail(request, pk):
 
 def comment_write(request, pk):
     post = get_object_or_404(Board, id=pk)
-    board_id = request.POST.get('board_id')
+    user_id = request.POST.get('user_id')
     content = request.POST.get('content')
     if content:
-        comment = Comment.objects.create(post=post, content=content, writer=request.user)
+        comment = Comment.objects.create(post=post, content=content, user_id=request.user)
         post.save()
         data = {
-            'board_id': board_id,
+            'user_id': user_id,
             'content': content,
         }
         if request.user == post.user_id:
