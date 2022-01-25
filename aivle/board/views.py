@@ -3,6 +3,7 @@ from .forms import BoardWriteForm
 from aivle import board
 from .models import *
 from django.views.decorators.csrf import csrf_exempt
+from django.core.paginator import Paginator
 
 def home(request):
     topics = board.objects.all()   #models의 Topic 개체 생성
@@ -41,4 +42,20 @@ def boarddelete(request, pk):
     board.delete()
     return redirect('board_list')
 
-   
+def boardpaging(request) : #board 간략하게 paging
+    now_page = request.GET.get('page')
+    datas = Board.objects.order_by('-board_id')
+
+    p = Paginator(datas,10)
+    info = p.get_page(now_page)
+    start_page = (now_page - 1) // 10 * 10 + 1
+    end_page = start_page + 9
+    if end_page > p.num_pages:
+        end_page = p.num_pages
+    context = {
+        'info' : info,
+        'page_range' : range(start_page, end_page + 1)
+    }
+    return render(request, 'board/board.html', context)
+    
+    
