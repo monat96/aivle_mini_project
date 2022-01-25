@@ -1,7 +1,7 @@
 from django import forms
 from .models import Board
 
-class WritingForm(forms.ModelForm):
+class BoardWriteForm(forms.ModelForm):
     class Meta:
         model = Board
         fields = ('title','content')

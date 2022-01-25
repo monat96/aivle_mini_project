@@ -3,6 +3,7 @@ from django.utils.timezone import now
 from django.conf import settings
 
 
+
 class Board(models.Model):
     board_id = models.AutoField(primary_key=True, null=False)
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name = "brduser_id", null=False)
@@ -12,6 +13,10 @@ class Board(models.Model):
     like = models.IntegerField(default=0, null=False)
     dislike = models.IntegerField(default=0, null=False)
     hit_cnt = models.IntegerField(default=0, null=False)
+
+    # def __str__(self):
+    #     return self.title
+    # # 제목이 board object가 되는 함수
 
     class Meta:
         db_table = 'board'
@@ -41,3 +46,10 @@ class File(models.Model):
     class Meta:
         db_table = 'file'
 
+class Notice(models.Model):
+    title = models.CharField(max_length= 45)
+    content = models.CharField(max_length= 400)
+    date = models.DateTimeField(auto_now_add=True)
+    hit_cnt = models.IntegerField()
+
+    db_table = 'notice'
