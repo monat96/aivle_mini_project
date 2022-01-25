@@ -9,18 +9,5 @@ class BoardWriteForm(forms.ModelForm):
         fields = [
             'title',
             'contents',
-            
+            'user_id'
         ]
-
-
-
-
-class BoardNoticeForm(forms.ModelForm):
-
-    class Meta:
-        model = Board
-        fields = [
-            'title',
-            'contents',
-        ]
-
