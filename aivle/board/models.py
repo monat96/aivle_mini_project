@@ -2,7 +2,6 @@ from django.db import models
 from django.db.models.fields import CharField, IntegerField, DateTimeField, FloatField
 from django.utils.timezone import now
 
-
 # Create your models here.
 
 # class Board(models.Model):
@@ -17,9 +16,6 @@ from django.utils.timezone import now
 
 #     class Meta:
 #         db_table = 'board'
-
-
-
 
 # class Comment(models.Model):
 #     comment_num = models.IntegerField(primary_key=True)
@@ -43,4 +39,3 @@ from django.utils.timezone import now
 
 #     class Meta:
 #         db_table = 'file'
-
