@@ -14,13 +14,11 @@ def register(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("accounts:login")
+            return render(request, 'login/login.html')
     else:
         form = RegisterForm()
     
-    context = {
-        'form' : form
-    }
+    context = {'form' : form}
     return render(request, 'register/register.html', context)
 
 @login_required
@@ -40,6 +38,6 @@ def update(request):
 def delete(request):
     if request.method == 'POST':
         request.user.delete()
-        return redirect('posts:list')
+        return redirect('main')
     return render(request, 'delete/delete.html')
 

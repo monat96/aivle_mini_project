@@ -1,10 +1,10 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect, get_object_or_404
 from .forms import BoardWriteForm
 from aivle import board
 from .models import *
 from django.views.decorators.csrf import csrf_exempt
 
-def home(request):
+def main(request):
     topics = board.objects.all()   #models의 Topic 개체 생성
     return render(request,'main.html',{'topics':topics})
 
@@ -21,6 +21,15 @@ def board_write(request): #폼 이용한거
     
     context = {'form' : form}
     return render(request, 'board/board_write.html', context)
+
+
+@csrf_exempt    
+def board_detail(request, pk):
+    board = get_object_or_404(Board, pk=pk)
+    context = {
+        'board':board,
+    }
+    return render(request, 'board/detail.html', context)
 
 @csrf_exempt
 def boardedit(request, pk):
@@ -40,5 +49,17 @@ def boarddelete(request, pk):
     board = Board.objects.get(id=pk)
     board.delete()
     return redirect('board_list')
+
+
+@csrf_exempt
+def notice_detail(request, pk):
+    notice = get_object_or_404(Notice, pk=pk)
+    context = {
+        'notice': notice,
+    }
+    return render(request, 'board/notice_detail.html', context)
+
+
+
 
    
