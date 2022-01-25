@@ -48,3 +48,10 @@ class File(models.Model):
     class Meta:
         db_table = 'file'
 
+class Notice(models.Model):
+    title = models.CharField(max_length= 45)
+    content = models.CharField(max_length= 400)
+    date = models.DateTimeField(auto_now_add=True)
+    hit_cnt = models.IntegerField()
+
+    db_table = 'notice'

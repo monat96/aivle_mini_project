@@ -1,11 +1,11 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect, get_object_or_404
 from .forms import BoardWriteForm
 from aivle import board
 from .models import *
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
 
-def home(request):
+def main(request):
     topics = board.objects.all()   #models의 Topic 개체 생성
     return render(request,'main.html',{'topics':topics})
 
@@ -22,6 +22,15 @@ def board_write(request): #폼 이용한거
     
     context = {'form' : form}
     return render(request, 'board/board_write.html', context)
+
+
+@csrf_exempt    
+def board_detail(request, pk):
+    board = get_object_or_404(Board, pk=pk)
+    context = {
+        'board':board,
+    }
+    return render(request, 'board/detail.html', context)
 
 @csrf_exempt
 def boardedit(request, pk):
@@ -42,6 +51,7 @@ def boarddelete(request, pk):
     board.delete()
     return redirect('board_list')
 
+<<<<<<< HEAD
 def boardpaging(request) : #board 간략하게 paging
     now_page = request.GET.get('page')
     datas = Board.objects.order_by('-board_id')
@@ -59,3 +69,18 @@ def boardpaging(request) : #board 간략하게 paging
     return render(request, 'board/board.html', context)
     
     
+=======
+
+@csrf_exempt
+def notice_detail(request, pk):
+    notice = get_object_or_404(Notice, pk=pk)
+    context = {
+        'notice': notice,
+    }
+    return render(request, 'board/notice_detail.html', context)
+
+
+
+
+   
+>>>>>>> 597a79558ab3458503a52df0621e8544cc6e6ed6
