@@ -26,7 +26,7 @@
     <!-- Start: Navigation Clean -->
     <nav class="navbar navbar-light navbar-expand-lg navigation-clean">
       <div class="container">
-        <a class="navbar-brand" href="#">Company Name</a>
+        <a class="navbar-brand" href="{% url 'board:main' %}">Company Name</a>
         <nav class="navbar navbar-light navbar-expand-md">
           <div class="container-fluid">
             <button
@@ -60,19 +60,10 @@
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
               <a class="nav-link" href="#"><i class="fa fa-search"></i></a>
-              {% if user.is_authenticated %}
-              <li>
-                {{ user.username }} 님
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" href="{% url 'member:logout' %}">logout</a>
-              </li>
-            {% else %}
               <li class="nav-item">
                 <a class="nav-link active" href="{% url 'accounts:login' %}">login</a>
               </li>
               <li class="nav-item"><a class="nav-link" href="{% url 'accounts:register' %}">register</a></li>
-            {% endif %}
           </ul>
         </div>
       </div>

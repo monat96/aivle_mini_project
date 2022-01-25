@@ -69,8 +69,13 @@
             <li class="nav-item">
               <a class="nav-link" href="#"><i class="fa fa-search"></i></a>
             </li>
-            <li class="nav-item"><a class="nav-link" href="#">login</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">register</a></li>
+            {% if user.is_authenticated %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'accounts:login' %}">mypage</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'accounts:logout' %}">logout</a></li>
+            {% else %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'accounts:login' %}">login</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'accounts:register' %}">register</a></li>
+            {% endif%}
           </ul>
         </div>
       </div>
