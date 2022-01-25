@@ -1,9 +1,7 @@
 from django.shortcuts import render,redirect
-from django.http import HttpResponse
 from .forms import BoardWriteForm
 from aivle import board
 from .models import *
-from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 
 def home(request):
@@ -12,45 +10,35 @@ def home(request):
 
 
 @csrf_exempt
-def register(request): #폼 이용한거 
+def board_write(request): #폼 이용한거 
     if request.method == 'POST':
         form = BoardWriteForm(request.POST)
         if form.is_valid():
             form.save()
-            
-            return render(request, 'list')
+            return redirect('board_list')
     else:
         form = BoardWriteForm()
     
     context = {'form' : form}
     return render(request, 'board/board_write.html', context)
 
-
-
-
-
-def board_write(request): #폼 이용 안한거
-    login_session = request.session.get('login_session', '')
-    context = {'login_session': login_session}
-
-    topics = board.objects.all()
-    
-    if request.method =='POST':
-        title = request.POST['title']
-        content = request.POST['content']
-
-        author = User.objects.first()
-
-        topic = board.objects.create(
-            title = title,
-            content = content,
-            user_id = author,
-        )
-
-        
+@csrf_exempt
+def boardedit(request, pk):
+    board = Board.objects.get(id=pk)
+    if request.method == "POST":
+        board.title = request.POST['title']
+        board.content = request.POST['content']
+        board.user_id = request.POST['user_id']
+        board.save()
         return redirect('board_list')
-    
-    return render(request,'board_write.html', {'topics':topics})
+    else:
+        boardForm = BoardWriteForm
+        return render(request, 'board/update.html', {'boardForm':boardForm})
 
+@csrf_exempt
+def boarddelete(request, pk):
+    board = Board.objects.get(id=pk)
+    board.delete()
+    return redirect('board_list')
 
    
