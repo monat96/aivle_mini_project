@@ -69,9 +69,9 @@
               </li>
             {% else %}
               <li class="nav-item">
-                <a class="nav-link active" href="/accounts/login/">login</a>
+                <a class="nav-link active" href="{% url 'accounts:login' %}">login</a>
               </li>
-              <li class="nav-item"><a class="nav-link" href="/accounts/register/">register</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'accounts:register' %}">register</a></li>
             {% endif %}
           </ul>
         </div>
@@ -84,27 +84,26 @@
         {% include "form_errors.html" %}
         <div class="illustration"><i class="icon ion-ios-navigate"></i></div>
         <div class="mb-3">
+          <label class="form-label">아이디</label
+          ><input
+            class="form-control"
+            type="text"
+            name="username"
+            id="username"
+            placeholder="username"
+            value="{{ form.username.value | default_if_none:'' }}"
+          />
+        </div>
+        <div class="mb-3">
           <label class="form-label">이메일 주소</label
           ><input
             class="form-control"
             type="email"
             name="email"
             id="email"
+            placeholder="Email"
             value="{{ form.email.value | default_if_none:'' }}"
           />
-        </div>
-        <div class="mb-3">
-          <label class="form-label">닉네임</label
-          ><input
-            class="form-control"
-            type="text"
-            name="nickname"
-            id="nickname"
-            value="{{ form.nickname.value | default_if_none:'' }}"
-          />
-          <ul style="font-size: 10px; padding-left: 12px; padding-top: 3px">
-            <li style="font-size: 11px">나를 표현할 닉네임을 입력해주세요.</li>
-          </ul>
         </div>
         <div class="mb-3">
           <label class="form-label">비밀번호</label
@@ -113,6 +112,7 @@
             type="password"
             name="password1"
             id="password1"
+            placeholder="Password"
             value="{{ form.password1.value | default_if_none:'' }}"
           />
           <div>
@@ -128,8 +128,9 @@
           ><input
             class="form-control"
             type="password"
-            name="confirm password2"
+            name="password2"
             id="password2"
+            placeholder="Confirm Password"
             value="{{ form.password2.value | default_if_none:'' }}"
           />
           <ul style="font-size: 10px; padding-left: 12px; padding-top: 3px">
@@ -143,7 +144,7 @@
             Register Now
           </button>
         </div>
-        <a class="forgot" href="/accounts/login/">계정이 이미 있으신가요? 로그인 하러가기</a>
+        <a class="forgot" href="{% url 'accounts:login' %}">계정이 이미 있으신가요? 로그인 하러가기</a>
       </form>
     </section>
     <!-- End: Login Form Clean --><!-- Start: Footer Basic -->

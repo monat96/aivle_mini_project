@@ -92,9 +92,10 @@
           <label class="form-label">이메일 주소</label
           ><input
             class="form-control"
-            type="email"
-            name="email"
-            id="email"
+            type="text"
+            name="username"
+            id="username"
+            placeholder="Username"
             value="{{ form.email.value | default_if_none:'' }}"
           />
         </div>
@@ -103,8 +104,9 @@
           ><input
             class="form-control"
             type="password"
-            name="password"
-            id="password"
+            name="password1"
+            id="password1"
+            placeholder="Password"
             value="{{ form.password.value | default_if_none:'' }}"
           />
         </div>
@@ -114,8 +116,7 @@
           </button>
         </div>
         <div>
-          <a class="forgot" href="/accounts/register/">계정이 없은신가요? 회원가입을 해보세요.</a
-          ><br><a class="forgot" href="#">비밀번호를 잊었나요? 비밀번호 찾기</a>
+          <a class="register" href="{% url 'accounts:register' %}">계정이 없은신가요? 회원가입을 해보세요.</a>
         </div>
       </form>
     </section>
