@@ -41,3 +41,5 @@ def delete(request):
         return redirect('main')
     return render(request, 'delete/delete.html')
 
+
+
