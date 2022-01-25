@@ -3,10 +3,14 @@ from .forms import BoardWriteForm
 from aivle import board
 from .models import *
 from django.views.decorators.csrf import csrf_exempt
+<<<<<<< HEAD
+from django.core.paginator import Paginator
+=======
 from django.core import serializers
 from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpResponse
 import json
+>>>>>>> 433730c7e84eb12b8a6f13c91586572942c9e3b2
 
 def main(request):
     topics = board.objects.all() 
@@ -54,6 +58,25 @@ def boarddelete(request, pk):
     board.delete()
     return redirect('board_list')
 
+<<<<<<< HEAD
+def boardpaging(request) : #board 간략하게 paging
+    now_page = request.GET.get('page')
+    datas = Board.objects.order_by('-board_id')
+
+    p = Paginator(datas,10)
+    info = p.get_page(now_page)
+    start_page = (now_page - 1) // 10 * 10 + 1
+    end_page = start_page + 9
+    if end_page > p.num_pages:
+        end_page = p.num_pages
+    context = {
+        'info' : info,
+        'page_range' : range(start_page, end_page + 1)
+    }
+    return render(request, 'board/board.html', context)
+    
+    
+=======
 
 @csrf_exempt
 def notice_detail(request, pk):
@@ -88,3 +111,4 @@ def comment_write(request, pk):
 
 
    
+>>>>>>> 597a79558ab3458503a52df0621e8544cc6e6ed6
