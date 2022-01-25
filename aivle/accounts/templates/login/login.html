@@ -26,7 +26,7 @@
     <!-- Start: Navigation Clean -->
     <nav class="navbar navbar-light navbar-expand-lg navigation-clean">
       <div class="container">
-        <a class="navbar-brand" href="#">Company Name</a
+        <a class="navbar-brand" href="{% url 'board:main' %}">Company Name</a
         ><button
           data-bs-toggle="collapse"
           class="navbar-toggler"
@@ -65,19 +65,12 @@
             <li class="nav-item">
               <a class="nav-link" href="#"><i class="fa fa-search"></i></a>
             </li>
-            {% if user.is_authenticated %}
-              <li>
-                {{ user.username }} 님
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" href="{% url 'member:logout' %}">logout</a>
-              </li>
-            {% else %}
-              <li class="nav-item">
-                <a class="nav-link active" href="/accounts/login/">login</a>
-              </li>
-              <li class="nav-item"><a class="nav-link" href="/accounts/register/">register</a></li>
-            {% endif %}
+            <li class="nav-item">
+              <a class="nav-link active" href="{% url 'accounts:login' %}">login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'accounts:register' %}">register</a>
+            </li>
           </ul>
         </div>
       </div>
@@ -85,18 +78,18 @@
     <!-- End: Navigation Clean --><!-- Start: Login Form Clean -->
     <section class="login-clean">
       <form method="post" style="max-width: 440px">
-        {% csrf_token %}
+        {% csrf_token %} 
         {% include "form_errors.html" %}
         <div class="illustration"><i class="icon ion-ios-navigate"></i></div>
         <div class="mb-3">
-          <label class="form-label">이메일 주소</label
+          <label class="form-label">아이디</label
           ><input
             class="form-control"
             type="text"
             name="username"
             id="username"
             placeholder="Username"
-            value="{{ form.email.value | default_if_none:'' }}"
+            value="{{ form.username.value | default_if_none:'' }}"
           />
         </div>
         <div class="mb-3">
@@ -104,8 +97,8 @@
           ><input
             class="form-control"
             type="password"
-            name="password1"
-            id="password1"
+            name="password"
+            id="password"
             placeholder="Password"
             value="{{ form.password.value | default_if_none:'' }}"
           />
@@ -116,7 +109,9 @@
           </button>
         </div>
         <div>
-          <a class="register" href="{% url 'accounts:register' %}">계정이 없은신가요? 회원가입을 해보세요.</a>
+          <a class="register" href="{% url 'accounts:register' %}"
+            >계정이 없은신가요? 회원가입을 해보세요.</a
+          >
         </div>
       </form>
     </section>

@@ -12,10 +12,7 @@ from django.contrib.auth import authenticate, login
 def register(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
-        [print(i) for i in form]
         if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password1')
             form.save()
             return render(request, 'login/login.html')
     else:
@@ -25,11 +22,6 @@ def register(request):
         'form' : form
     }
     return render(request, 'register/register.html', context)
-
-
-
-# Create your views here.
-
 
 @login_required
 def update(request):
