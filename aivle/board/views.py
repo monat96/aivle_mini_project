@@ -3,14 +3,18 @@ from .forms import BoardWriteForm
 from aivle import board
 from .models import *
 from django.views.decorators.csrf import csrf_exempt
+from django.core import serializers
+from django.core.serializers.json import DjangoJSONEncoder
+from django.http import HttpResponse
+import json
 
 def main(request):
-    topics = board.objects.all()   #models의 Topic 개체 생성
+    topics = board.objects.all() 
     return render(request,'main.html',{'topics':topics})
 
 
 @csrf_exempt
-def board_write(request): #폼 이용한거 
+def board_write(request):
     if request.method == 'POST':
         form = BoardWriteForm(request.POST)
         if form.is_valid():
@@ -58,6 +62,27 @@ def notice_detail(request, pk):
         'notice': notice,
     }
     return render(request, 'board/notice_detail.html', context)
+
+
+def comment_write(request, pk):
+    post = get_object_or_404(Board, id=pk)
+    board_id = request.POST.get('board_id')
+    content = request.POST.get('content')
+    if content:
+        comment = Comment.objects.create(post=post, content=content, writer=request.user)
+        post.save()
+        data = {
+            'board_id': board_id,
+            'content': content,
+        }
+        if request.user == post.user_id:
+            data['self_comment'] = '(글쓴이)'
+        
+        return HttpResponse(json.dumps(data, cls=DjangoJSONEncoder), content_type = "application/json")
+
+
+
+
 
 
 
