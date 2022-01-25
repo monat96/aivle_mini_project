@@ -29,7 +29,7 @@ def board_write(request):
     else:
         form = BoardWriteForm()
     context = {'form':form}
-    return render(request, 'board/write.html', {'context':context})
+    return render(request, 'board/write.html', context)
     
 
 # @csrf_exempt
