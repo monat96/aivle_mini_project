@@ -4,15 +4,21 @@ from django.utils.timezone import now
 from django.conf import settings
 
 
+
 class Board(models.Model):
     board_id = models.IntegerField(primary_key=True)
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name = "brduser_id")
     title = models.CharField(max_length= 45)
     content = models.CharField(max_length= 400)
-    date = models.DateTimeField(default=now, editable=False)
+    date = models.DateTimeField(auto_now_add=True)
     like = models.IntegerField()
     dislike = models.IntegerField()
     hit_cnt = models.IntegerField()
+
+
+    # def __str__(self):
+    #     return self.title
+    # # 제목이 board object가 되는 함수
 
     class Meta:
         db_table = 'board'

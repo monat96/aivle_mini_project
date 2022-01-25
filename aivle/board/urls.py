@@ -5,4 +5,5 @@ app_name = 'board'
 urlpatterns = [
     path('main/', views.main, name='main'),
     path('board/', views.board, name='board'),
+    path('new/',views.new_topic,name='new_topic'),
 ]
