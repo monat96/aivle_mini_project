@@ -1,6 +1,5 @@
 from django.shortcuts import render,redirect, get_object_or_404
 from .forms import BoardWriteForm
-from aivle import board
 from .models import *
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
@@ -12,22 +11,43 @@ from config import settings
 # import json
 
 def main(request):
-    topics = board.objects.all() 
-    return render(request,'main.html',{'topics':topics})
+    topics = Board.objects.all() 
+    return render(request,'board/main.html',{'topics':topics})
 
+@csrf_exempt
+def mypage(request):
+    now_page = request.GET.get('page', 1)
+    user_id = request.user
+    datas = Board.objects.filter(user_id_id = user_id).order_by('-board_id')
+
+    paginator = Paginator(datas, 10)
+    info = paginator.get_page(now_page)
+    start_page = (int(now_page)-1) // 10 * 10 + 1
+    end_page = start_page + 1
+
+    if end_page > paginator.num_pages:
+        end_page = paginator.num_pages
+    
+    context = {
+        'info' : info,
+        'page_range' : range(start_page, end_page + 1)
+    }
+    return render(request, 'board/mypage.html', context)
 
 @csrf_exempt
 def board_write(request):
     if request.method == 'POST':
         form = BoardWriteForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('board_list')
+            writing = form.save(commit=False)
+            writing.user_id = request.user
+            writing.save()
+            return redirect('board:board')
     else:
         form = BoardWriteForm()
     
     context = {'form' : form}
-    return render(request, 'board/board_write.html', context)
+    return render(request, 'board/write.html', context)
 
 
 @csrf_exempt    
