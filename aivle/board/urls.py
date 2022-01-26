@@ -13,6 +13,7 @@ urlpatterns = [
     path('detail/<int:pk>/comment', views.comment, name='comment'),
     path('mypage/', views.mypage, name='mypage'),
     path('withdraw/', views.withdraw, name='withdraw'),
+    path('change_password/', views.change_password, name='change_password'),
     # path('detail/<int:pk>/',views.boarddetail, name = 'board_detail'),
     # path('detail/<int:pk>/edit', views.boardedit, name = 'board_edit'),
     # path('detail/<int:pk>/delete',views.boarddelete,name='board_delete'),
