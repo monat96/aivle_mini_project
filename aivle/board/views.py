@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect, get_object_or_404
-from .forms import BoardWriteForm
+from .forms import BoardWriteForm, CommentForm
 from .models import *
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
@@ -101,7 +101,7 @@ def notice_detail(request, pk):
     }
     return render(request, 'board/notice_detail.html', context)
 
-
+@csrf_exempt
 def download(request):
     id = request.GET.get('board_id')
     uploadFile = Board.objects.get(id=id)
@@ -112,16 +112,21 @@ def download(request):
         response['Content-Disposition'] = 'attachment; filename=%s' % filename
         return response
 
+@csrf_exempt
+def comment(request, board_id):
+    board = get_object_or_404(Board, pk=board_id)
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.board = board
+            comment.save()
+            return redirect('board:board_detail', board_id=board_id)
+    else:
+        form = CommentForm()
 
-def comment(request, id):
-    board = get_object_or_404(Board, pk=id)
-    board.comment_set.create(
-        content=request.POST.get('content'), create_date=timezone.now())
-    comment = Answer(
-        question=question, content=request.POST.get('content'),
-        create_date=timezone.now())
-    comment.save()
-    return redirect('board:bord_detail', id=id)
+    context = {'board': board, 'form': form}
+    return render(request, 'board:board_detail', context)
 
 
 
