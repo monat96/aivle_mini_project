@@ -52,7 +52,7 @@
                   <a class="nav-link" href="{% url 'board:board' %}">게시판</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Third Item</a>
+                  <a class="nav-link" href="{% url 'board:mypage' %}">마이페이지</a>
                 </li>
               </ul>
             </div>
@@ -95,13 +95,13 @@
         <h2>Mypage</h2>
         <ul>
           <li>
-            <a href="#"><i class="nav-link"></i>내가쓴글</a>
+            <a href="{% url 'board:mypage' %}"><i class="nav-link"></i>내가 쓴 글</a>
           </li>
           <li>
-            <a href="#"><i class="nav-link"></i>Profile</a>
+            <a href="#"><i class="nav-link"></i>회원정보수정</a>
           </li>
           <li>
-            <a href="#"><i class="nav-link"></i>About</a>
+            <a href="{% url 'board:withdraw' %}"><i class="nav-link"></i>회원탈퇴</a>
           </li>
           <li>
             <a href="#"><i class="nav-link"></i>portfolio</a>
