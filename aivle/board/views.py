@@ -11,14 +11,10 @@ from django.core.paginator import Paginator
 
 def main(request):
     topics = board.objects.all() 
-    return render(request,'main.html',{'topics':topics})
-
-<<<<<<< HEAD
+    return render(request,'main.html',{'topics':topics})\
+        
 # def board(request):
 #     return render(request, 'board/board.html')
-=======
->>>>>>> caaa2a0e3247c971ceac4d62ccd86755bf4db450
-
 @csrf_exempt
 def board_write(request):
     if request.method == 'POST':
@@ -61,20 +57,12 @@ def boarddelete(request, pk):
     return redirect('board_list')
 
 def boardpaging(request) : #board 간략하게 paging
-<<<<<<< HEAD
     now_page = request.GET.get('page',1)
-=======
-    now_page = request.GET.get('page')
->>>>>>> caaa2a0e3247c971ceac4d62ccd86755bf4db450
     datas = Board.objects.order_by('-board_id')
 
     p = Paginator(datas,10)
     info = p.get_page(now_page)
-<<<<<<< HEAD
     start_page = (int(now_page) - 1) // 10 * 10 + 1
-=======
-    start_page = (now_page - 1) // 10 * 10 + 1
->>>>>>> caaa2a0e3247c971ceac4d62ccd86755bf4db450
     end_page = start_page + 9
     if end_page > p.num_pages:
         end_page = p.num_pages

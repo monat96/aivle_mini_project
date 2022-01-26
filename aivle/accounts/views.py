@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import RegisterForm
 from django.contrib.auth import authenticate, login
 
+
 # Create your views here.
 @csrf_exempt
 def register(request):
@@ -39,14 +40,14 @@ def change_password(request):
     form = PasswordChangeForm(request.user)
   return render(request, 'change_password.html',{'form':form})
 
-@csrf_exempt
-@login_required
-def delete(request):
-    if request.method == 'POST':
-        request.user.delete()
-        messages.success(request, '그 동안 이용해주셔서 감사합니다.')
-        return redirect('main')
-    return render(request, 'delete/delete.html')
+# @csrf_exempt
+# @login_required
+# def delete(request):
+#     if request.method == 'POST':
+#         request.user.delete()
+#         messages.success(request, '그 동안 이용해주셔서 감사합니다.')
+#         return redirect('main')
+#     return render(request, 'delete/delete.html')
 
 
 
