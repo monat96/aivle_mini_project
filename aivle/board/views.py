@@ -16,8 +16,8 @@ def main(request):
 
 def mypage(request):
     now_page = request.GET.get('page', 1)
-    user_id = request.user
-    datas = Board.objects.filter(user_id_id = user_id).order_by('-board_id')
+    user = request.user.get_id
+    datas = Board.objects.filter(user_id = user).order_by('-id')
 
     paginator = Paginator(datas, 10)
     info = paginator.get_page(now_page)
@@ -53,7 +53,7 @@ def board_write(request):
         form = BoardWriteForm(request.POST)
         if form.is_valid():
             writing = form.save(commit=False)
-            writing.user_id = request.user
+            writing.user = request.user.get_id
             writing.save()
             return redirect('board:board')
     else:

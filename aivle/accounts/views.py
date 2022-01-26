@@ -3,7 +3,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from .forms import RegisterForm
 from django.contrib.auth import get_user_model
 
@@ -24,7 +23,6 @@ def register(request):
 
 
 @csrf_exempt
-@login_required
 def change_password(request):
   if request.method == "POST":
     form = PasswordChangeForm(request.user, request.POST)
@@ -32,7 +30,7 @@ def change_password(request):
       user = form.save()
       update_session_auth_hash(request, user)
       messages.success(request, '비밀번호가 변경되었습니다.')
-      return redirect('main')
+      return redirect('board/main.html')
     else:
       messages.error(request,'비밀번호를 확인해주세요.')
   else:
