@@ -1,49 +1,31 @@
 from django.shortcuts import render,redirect, get_object_or_404
 from .forms import BoardWriteForm
+from aivle import board
 from .models import *
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
-from django.core import serializers
-from django.core.serializers.json import DjangoJSONEncoder
-from django.http import HttpResponse
-import json
+# from django.core import serializers
+# from django.core.serializers.json import DjangoJSONEncoder
+# from django.http import HttpResponse
+# import json
 
 def main(request):
-    topics = Board.objects.all() 
-    return render(request,'board/main.html',{'topics':topics})
-    # return render(request, 'board/main.html')
+    topics = board.objects.all() 
+    return render(request,'main.html',{'topics':topics})
 
-def board(request):
-    return render(request, 'board/board.html')
 
-# 게시글 작성
 @csrf_exempt
 def board_write(request):
     if request.method == 'POST':
         form = BoardWriteForm(request.POST)
         if form.is_valid():
-            writing = form.save(commit=False)
-            writing.user_id = request.user
-            writing.save()
-            return redirect('board:board')
+            form.save()
+            return redirect('board_list')
     else:
         form = BoardWriteForm()
-    context = {'form':form}
-    return render(request, 'board/write.html', context)
     
-
-# @csrf_exempt
-# def board_write(request):
-#     if request.method == 'POST':
-#         form = BoardWriteForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('board_list')
-#     else:
-#         form = BoardWriteForm()
-    
-#     context = {'form' : form}
-#     return render(request, 'board/board_write.html', context)
+    context = {'form' : form}
+    return render(request, 'board/board_write.html', context)
 
 
 @csrf_exempt    
@@ -73,21 +55,21 @@ def boarddelete(request, pk):
     board.delete()
     return redirect('board_list')
 
-# def boardpaging(request) : #board 간략하게 paging
-#     now_page = request.GET.get('page')
-#     datas = Board.objects.order_by('-board_id')
+def boardpaging(request) : #board 간략하게 paging
+    now_page = request.GET.get('page')
+    datas = Board.objects.order_by('-board_id')
 
-#     p = Paginator(datas,10)
-#     info = p.get_page(now_page)
-#     start_page = (now_page - 1) // 10 * 10 + 1
-#     end_page = start_page + 9
-#     if end_page > p.num_pages:
-#         end_page = p.num_pages
-#     context = {
-#         'info' : info,
-#         'page_range' : range(start_page, end_page + 1)
-#     }
-#     return render(request, 'board/board.html', context)
+    p = Paginator(datas,10)
+    info = p.get_page(now_page)
+    start_page = (now_page - 1) // 10 * 10 + 1
+    end_page = start_page + 9
+    if end_page > p.num_pages:
+        end_page = p.num_pages
+    context = {
+        'info' : info,
+        'page_range' : range(start_page, end_page + 1)
+    }
+    return render(request, 'board/board.html', context)
     
 
 @csrf_exempt
@@ -114,3 +96,12 @@ def notice_detail(request, pk):
 #             data['self_comment'] = '(글쓴이)'
         
 #         return HttpResponse(json.dumps(data, cls=DjangoJSONEncoder), content_type = "application/json")
+
+
+
+
+
+
+
+
+   
