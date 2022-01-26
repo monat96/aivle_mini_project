@@ -4,11 +4,10 @@ from django.conf import settings
 
 
 class Board(models.Model):
-    board_id = models.AutoField(primary_key=True, null=False)
-    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name = "brduser_id", null=False)
+    # user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name = "brduser_id", null=False)
     title = models.CharField(max_length=256, null=False)
     content = models.TextField(null=False)
-    image = models.FileField(null = True, blank = True, upload_to='uploads/')
+    image = models.FileField(null = True, blank = True, upload_to='img/')
     date = models.DateTimeField(default=now, editable=False, null=False)
     # like = models.IntegerField(default=0, null=False)
     # dislike = models.IntegerField(default=0, null=False)
@@ -24,13 +23,11 @@ class Board(models.Model):
 
 
 class Comment(models.Model):
-    comment_num = models.AutoField(primary_key=True)
-    board_id = models.ForeignKey(Board, on_delete=models.CASCADE, verbose_name = "cmtboard_id")
-    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name = "cmtuser_id")
+    board = models.ForeignKey(Board, on_delete=models.CASCADE, verbose_name = "cmtboard_id")
+    # user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name = "cmtuser_id")
     content = models.TextField()
-    
-    like = models.IntegerField(default=0)
-    dislike = models.IntegerField(default=0)
+    # like = models.IntegerField(default=0)
+    # dislike = models.IntegerField(default=0)
 
     class Meta:
         db_table = 'comment'
