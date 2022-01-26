@@ -5,6 +5,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
 import os
 from config import settings
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.contrib.auth.hashers import check_password
 # from django.core import serializers
 # from django.core.serializers.json import DjangoJSONEncoder
 # from django.http import HttpResponse
@@ -15,6 +18,7 @@ def main(request):
     return render(request,'board/main.html',{'topics':topics})
 
 @csrf_exempt
+@login_required
 def mypage(request):
     now_page = request.GET.get('page', 1)
     user_id = request.user
@@ -34,7 +38,20 @@ def mypage(request):
     }
     return render(request, 'board/mypage.html', context)
 
+def withdraw(request):
+    if request.method == 'POST':
+        password = request.POST.get('password', '')
+        print(password)
+        user = request.user
+        if check_password(password, user.password):
+            user.delete()
+            messages.success(request, '그 동안 이용해주셔서 감사합니다.')
+            return redirect('board:main')
+        
+    return render(request, 'board/withdraw.html')
+
 @csrf_exempt
+@login_required
 def board_write(request):
     if request.method == 'POST':
         form = BoardWriteForm(request.POST)
@@ -50,7 +67,7 @@ def board_write(request):
     return render(request, 'board/write.html', context)
 
 
-@csrf_exempt    
+@csrf_exempt 
 def board_detail(request, pk):
     board = get_object_or_404(Board, pk=pk)
     context = {

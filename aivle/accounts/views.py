@@ -21,7 +21,7 @@ def register(request):
         form = RegisterForm()
     
     context = {'form' : form}
-    return render(request, 'register/register.html', context)
+    return render(request, 'register.html', context)
 
 
 @csrf_exempt
@@ -38,16 +38,16 @@ def change_password(request):
       messages.error(request,'비밀번호를 확인해주세요.')
   else:
     form = PasswordChangeForm(request.user)
-  return render(request, 'change_password.html',{'form':form})
+  return render(request, 'update/change_password.html',{'form':form})
 
-# @csrf_exempt
-# @login_required
-# def delete(request):
-#     if request.method == 'POST':
-#         request.user.delete()
-#         messages.success(request, '그 동안 이용해주셔서 감사합니다.')
-#         return redirect('main')
-#     return render(request, 'delete/delete.html')
+@csrf_exempt
+@login_required
+def delete(request):
+    if request.method == 'POST':
+        request.user.delete()
+        messages.success(request, '그 동안 이용해주셔서 감사합니다.')
+        return redirect('main')
+    return render(request, 'delete/delete.html')
 
 
 
