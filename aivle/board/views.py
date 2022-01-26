@@ -1,18 +1,16 @@
 from django.shortcuts import render,redirect, get_object_or_404
 from .forms import BoardWriteForm
-from aivle import board
 from .models import *
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
 import os
 from config import settings
-# from django.core import serializers
-# from django.core.serializers.json import DjangoJSONEncoder
-# from django.http import HttpResponse
-# import json
+from django.utils import timezone
+from django.http import HttpResponse
+
 
 def main(request):
-    topics = board.objects.all() 
+    topics = Board.objects.all() 
     return render(request,'main.html',{'topics':topics})
 
 
@@ -34,7 +32,6 @@ def board_write(request):
 def board_detail(request, pk):
     board = get_object_or_404(Board, pk=pk)
     context = {
-
         'board':board,
     }
     return render(request, 'board/detail.html', context)
@@ -45,7 +42,7 @@ def boardedit(request, pk):
     if request.method == "POST":
         board.title = request.POST['title']
         board.content = request.POST['content']
-        board.user_id = request.POST['user_id']
+        board.image = request.POST['image']
         board.save()
         return redirect('board_list')
     else:
@@ -84,23 +81,26 @@ def notice_detail(request, pk):
     return render(request, 'board/notice_detail.html', context)
 
 
-# def comment_write(request, pk):
-#     post = get_object_or_404(Board, id=pk)
-#     user_id = request.POST.get('user_id')
-#     content = request.POST.get('content')
-#     if content:
-#         comment = Comment.objects.create(post=post, content=content, user_id=request.user)
-#         post.save()
-#         data = {
-#             'user_id': user_id,
-#             'content': content,
-#         }
-#         if request.user == post.user_id:
-#             data['self_comment'] = '(글쓴이)'
-        
-#         return HttpResponse(json.dumps(data, cls=DjangoJSONEncoder), content_type = "application/json")
+def download(request):
+    id = request.GET.get('board_id')
+    uploadFile = Board.objects.get(id=id)
+    filepath = str(settings.BASE_DIR) + ('/media/%s' % uploadFile.image.name)
+    filename = os.path.basename(filepath)
+    with open(filepath, 'rb') as f:
+        response = HttpResponse(f, content_type='application/octet-stream')
+        response['Content-Disposition'] = 'attachment; filename=%s' % filename
+        return response
 
 
+def comment(request, id):
+    board = get_object_or_404(Board, pk=id)
+    board.comment_set.create(
+        content=request.POST.get('content'), create_date=timezone.now())
+    comment = Answer(
+        question=question, content=request.POST.get('content'),
+        create_date=timezone.now())
+        comment.save()
+    return redirect('board:bord_detail', id=id)
 
 
 
