@@ -57,11 +57,11 @@ def board_detail(request, pk):
 
         'board':board,
     }
-    return render(request, 'board/detail.html', context)
+    return render(request, 'board:board_detail', context)
 
 @csrf_exempt
 def boardedit(request, pk):
-    board = Board.objects.get(id=pk)
+    board = Board.objects.get(board_id=pk)
     if request.method == "POST":
         board.title = request.POST['title']
         board.content = request.POST['content']
@@ -74,7 +74,7 @@ def boardedit(request, pk):
 
 @csrf_exempt
 def boarddelete(request, pk):
-    board = Board.objects.get(id=pk)
+    board = Board.objects.get(board_id=pk)
     board.delete()
     return redirect('board_list')
 
