@@ -7,14 +7,8 @@ import os
 from config import settings
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password
-# from django.core import serializers
-# from django.core.serializers.json import DjangoJSONEncoder
-# from django.http import HttpResponse
-# import json
 
 def main(request):
     topics = Board.objects.all() 

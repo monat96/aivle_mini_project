@@ -37,11 +37,7 @@ def change_password(request):
       messages.error(request,'비밀번호를 확인해주세요.')
   else:
     form = PasswordChangeForm(request.user)
-<<<<<<< HEAD
-  return render(request, 'change_password.html',{'form':form})
-=======
   return render(request, 'update/change_password.html',{'form':form})
->>>>>>> frontend
 
 @csrf_exempt
 @login_required
