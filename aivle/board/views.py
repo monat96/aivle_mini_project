@@ -5,7 +5,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
 import os
 from config import settings
-from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password
@@ -14,8 +13,7 @@ def main(request):
     topics = Board.objects.all() 
     return render(request,'main.html',{'topics':topics})
 
-@csrf_exempt
-@login_required
+
 def mypage(request):
     now_page = request.GET.get('page', 1)
     user_id = request.user
@@ -35,7 +33,7 @@ def mypage(request):
     }
     return render(request, 'board/mypage.html', context)
 
-@login_required
+
 def withdraw(request):
     if request.method == 'POST':
         password = request.POST.get('password', '')
@@ -49,7 +47,7 @@ def withdraw(request):
     return render(request, 'board/withdraw.html')
 
 @csrf_exempt
-@login_required
+
 def board_write(request):
     if request.method == 'POST':
         form = BoardWriteForm(request.POST)
@@ -76,7 +74,7 @@ def board_detail(request, pk):
 
     return render(request, 'board:board_detail', context)
 
-@login_required
+
 @csrf_exempt
 def boardedit(request, pk):
     board = Board.objects.get(board_id=pk)
@@ -156,7 +154,6 @@ def download(request):
 
 
 
-@login_required
 @csrf_exempt
 def comment(request, board_id):
     board = get_object_or_404(Board, pk=board_id)

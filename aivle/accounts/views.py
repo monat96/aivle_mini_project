@@ -39,14 +39,6 @@ def change_password(request):
     form = PasswordChangeForm(request.user)
   return render(request, 'update/change_password.html',{'form':form})
 
-@csrf_exempt
-@login_required
-def delete(request):
-    if request.method == 'POST':
-        request.user.delete()
-        messages.success(request, '그 동안 이용해주셔서 감사합니다.')
-        return redirect('main')
-    return render(request, 'delete/delete.html')
 
 def detail(request, pk):
     User = get_user_model()
