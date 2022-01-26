@@ -8,6 +8,8 @@ from config import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 # from django.core import serializers
 # from django.core.serializers.json import DjangoJSONEncoder
 # from django.http import HttpResponse
@@ -38,6 +40,8 @@ def mypage(request):
     }
     return render(request, 'board/mypage.html', context)
 
+@csrf_exempt
+@login_required
 def withdraw(request):
     if request.method == 'POST':
         password = request.POST.get('password', '')
@@ -138,9 +142,22 @@ def notice_detail(request, pk):
 #         return HttpResponse(json.dumps(data, cls=DjangoJSONEncoder), content_type = "application/json")
 
 
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+       	    form.save()
+            update_session_auth_hash(request, form.user)
+            return redirect('board:mypage')
+    else:
+        form = PasswordChangeForm(request.user)
 
-
-
+    context = {
+    	'form' : form,
+    }
+    
+    return render(request, 'board/change_password.html', context)
 
 
 
