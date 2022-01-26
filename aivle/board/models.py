@@ -11,7 +11,7 @@ class Board(models.Model):
     date = models.DateTimeField(default=now, editable=False, null=False)
     # like = models.IntegerField(default=0, null=False)
     # dislike = models.IntegerField(default=0, null=False)
-    # hit_cnt = models.IntegerField(default=0, null=False)
+    hit_cnt = models.IntegerField(default=0, null=False)
 
     # def __str__(self):
     #     return self.title
@@ -47,6 +47,6 @@ class Notice(models.Model):
     title = models.CharField(max_length= 45)
     content = models.CharField(max_length= 400)
     date = models.DateTimeField(auto_now_add=True)
-    hit_cnt = models.IntegerField()
+    hit_cnt = models.IntegerField(default=now, editable=False, null=False)
 
     db_table = 'notice'

@@ -1,10 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import RegisterForm
+from django.contrib.auth import get_user_model
 
 
 # Create your views here.
@@ -47,5 +48,11 @@ def delete(request):
         return redirect('main')
     return render(request, 'delete/delete.html')
 
-
+def detail(request, pk):
+    User = get_user_model()
+    user = get_object_or_404(User, pk=pk)
+    context = {
+        'user': user
+    }
+    return render(request, 'accounts/detail.html', context)
 

@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
 import os
 from config import settings
-from django.utils import timezone
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
 
@@ -33,6 +33,7 @@ def mypage(request):
     }
     return render(request, 'board/mypage.html', context)
 
+@login_required
 @csrf_exempt
 def board_write(request):
     if request.method == 'POST':
@@ -55,15 +56,19 @@ def board_detail(request, pk):
     context = {
         'board':board,
     }
+    board.hit_cnt += 1
+    board.save()
+
     return render(request, 'board:board_detail', context)
 
+@login_required
 @csrf_exempt
 def boardedit(request, pk):
     board = Board.objects.get(board_id=pk)
     if request.method == "POST":
         board.title = request.POST['title']
         board.content = request.POST['content']
-        board.image = request.POST['image']
+        board.image = request.FILES['image']
         board.save()
         return redirect('board_list')
     else:
@@ -76,9 +81,11 @@ def boarddelete(request, pk):
     board.delete()
     return redirect('board_list')
 
+
+@csrf_exempt
 def boardpaging(request) : #board 간략하게 paging
     now_page = request.GET.get('page',1)
-    datas = Board.objects.order_by('-board_id')
+    datas = Board.objects.order_by('-id')
 
     p = Paginator(datas,10)
     info = p.get_page(now_page)
@@ -91,7 +98,24 @@ def boardpaging(request) : #board 간략하게 paging
         'page_range' : range(start_page, end_page + 1)
     }
     return render(request, 'board/board.html', context)
+
     
+@csrf_exempt    
+def notice_boardpaging(request):
+    now_page = request.GET.get('page',1)
+    datas =  Notice.objects.order_by('-id')
+
+    p = Paginator(datas,10)
+    info = p.get_page(now_page)
+    start_page = (int(now_page) - 1) // 10 * 10 + 1
+    end_page = start_page + 9
+    if end_page > p.num_pages:
+        end_page = p.num_pages
+    context = {
+        'info' : info,
+        'page_range' : range(start_page, end_page + 1)
+    }
+    return render(request, 'board/notice.html', context) #notice.html => board에서 공지사항이라고만 수정하고 글쓰기 버튼 없앤 거 
 
 @csrf_exempt
 def notice_detail(request, pk):
@@ -99,11 +123,14 @@ def notice_detail(request, pk):
     context = {
         'notice': notice,
     }
+    notice.hit_cnt += 1
+    notice.save()
+
     return render(request, 'board/notice_detail.html', context)
 
 @csrf_exempt
 def download(request):
-    id = request.GET.get('board_id')
+    id = request.GET.get('id')
     uploadFile = Board.objects.get(id=id)
     filepath = str(settings.BASE_DIR) + ('/media/%s' % uploadFile.image.name)
     filename = os.path.basename(filepath)
@@ -112,6 +139,9 @@ def download(request):
         response['Content-Disposition'] = 'attachment; filename=%s' % filename
         return response
 
+
+
+@login_required
 @csrf_exempt
 def comment(request, board_id):
     board = get_object_or_404(Board, pk=board_id)
