@@ -12,7 +12,7 @@ from django.contrib.auth.hashers import check_password
 
 def main(request):
     topics = Board.objects.all() 
-    return render(request,'main.html',{'topics':topics})
+    return render(request,'board/main.html',{'topics':topics})
 
 @csrf_exempt
 @login_required
