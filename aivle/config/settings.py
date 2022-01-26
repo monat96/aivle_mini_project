@@ -131,3 +131,6 @@ LOGIN_REDIRECT_URL = '/board/main'
 LOGOUT_REDIRECT_URL = '/board/main'
 
 AUTH_USER_MODEL = 'auth.User'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

@@ -4,6 +4,8 @@ from aivle import board
 from .models import *
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
+import os
+from config import settings
 # from django.core import serializers
 # from django.core.serializers.json import DjangoJSONEncoder
 # from django.http import HttpResponse
@@ -11,10 +13,9 @@ from django.core.paginator import Paginator
 
 def main(request):
     topics = board.objects.all() 
-    return render(request,'main.html',{'topics':topics})\
-        
-# def board(request):
-#     return render(request, 'board/board.html')
+    return render(request,'main.html',{'topics':topics})
+
+
 @csrf_exempt
 def board_write(request):
     if request.method == 'POST':
@@ -33,6 +34,7 @@ def board_write(request):
 def board_detail(request, pk):
     board = get_object_or_404(Board, pk=pk)
     context = {
+
         'board':board,
     }
     return render(request, 'board/detail.html', context)
