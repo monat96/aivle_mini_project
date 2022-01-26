@@ -7,7 +7,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
     />
-    <title>register</title>
+    <title>login</title>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
@@ -20,46 +20,51 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css"
     />
-    <link rel="stylesheet" href="{%static 'css/styles.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/styles.min.css' %}" />
   </head>
   <body>
     <!-- Start: Navigation Clean -->
     <nav class="navbar navbar-light navbar-expand-lg navigation-clean">
       <div class="container">
-        <a class="navbar-brand" href="{% url 'board:main' %}">NFT 커뮤니티</a>
-        <nav class="navbar navbar-light navbar-expand-md">
-          <div class="container-fluid">
-            <button
-              data-bs-toggle="collapse"
-              data-bs-target="#navcol-1"
-              class="navbar-toggler"
-            >
-              <span class="visually-hidden">Toggle navigation</span
-              ><span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navcol-2">
-              <ul class="navbar-nav">
-                <li class="nav-item">
-                  <a class="nav-link active" href="{% url 'board:main' %}">Home</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'board:board' %}">게시판</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Third Item</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </nav>
-        <button class="navbar-toggler" data-bs-toggle="collapse">
+        <a class="navbar-brand" href="{% url 'board:main' %}">NFT 커뮤니티</a
+        ><button
+          data-bs-toggle="collapse"
+          class="navbar-toggler"
+          data-bs-target="#navcol-1"
+        >
           <span class="visually-hidden">Toggle navigation</span
           ><span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navcol-1">
+          <nav class="navbar navbar-light navbar-expand-md">
+            <div class="container-fluid">
+              <button
+                data-bs-toggle="collapse"
+                class="navbar-toggler"
+                data-bs-target="#navcol-2"
+              >
+                <span class="visually-hidden">Toggle navigation</span
+                ><span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navcol-2">
+                <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'board:main' %}">Home</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'board:board' %}">게시판</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'board:mypage' %}">마이페이지</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
               <a class="nav-link" href="#"><i class="fa fa-search"></i></a>
+            </li>
               {% if user.is_authenticated %}
               <li class="nav-item"><a class="nav-link" href="#">{{user.username}}님</a></li>
               <li class="nav-item"><a class="nav-link" href="{% url 'accounts:logout' %}">logout</a></li>
@@ -67,6 +72,7 @@
               <li class="nav-item"><a class="nav-link" href="{% url 'accounts:login' %}">login</a></li>
               <li class="nav-item"><a class="nav-link" href="{% url 'accounts:register' %}">register</a></li>
               {% endif%}
+            </li>
           </ul>
         </div>
       </div>
@@ -74,11 +80,11 @@
     <!-- End: Navigation Clean --><!-- Start: Login Form Clean -->
     <section class="login-clean">
       <form method="post" style="max-width: 440px">
-        {% csrf_token %}
+        {% csrf_token %} 
         {% include "form_errors.html" %}
         <div class="illustration"><i class="icon ion-ios-navigate"></i></div>
         <div class="mb-3">
-          <label class="form-label">아이디</label
+          <label class="form-label">아이디</label
           ><input
             class="form-control"
             type="text"
@@ -89,56 +95,26 @@
           />
         </div>
         <div class="mb-3">
-          <label class="form-label">이메일 주소</label
-          ><input
-            class="form-control"
-            type="email"
-            name="email"
-            id="email"
-            placeholder="Email"
-            value="{{ form.email.value | default_if_none:'' }}"
-          />
-        </div>
-        <div class="mb-3">
-          <label class="form-label">비밀번호</label
+          <label class="form-label">비밀번호</label
           ><input
             class="form-control"
             type="password"
-            name="password1"
-            id="password1"
+            name="password"
+            id="password"
             placeholder="Password"
-            value="{{ form.password1.value | default_if_none:'' }}"
+            value="{{ form.password.value | default_if_none:'' }}"
           />
-          <div>
-            <ul style="font-size: 11px; padding-left: 12px; padding-top: 3px">
-              <li>다른 개인 정보와 유사한 비밀번호는 사용할 수 없습니다.</li>
-              <li>비밀번호는 최소 8자 이상이어야 합니다.</li>
-              <li>숫자로만 이루어진 비밀번호는 사용할 수 없습니다.</li>
-            </ul>
-          </div>
-        </div>
-        <div class="mb-3">
-          <label class="form-label">비밀번호 확인</label
-          ><input
-            class="form-control"
-            type="password"
-            name="password2"
-            id="password2"
-            placeholder="Confirm Password"
-            value="{{ form.password2.value | default_if_none:'' }}"
-          />
-          <ul style="font-size: 10px; padding-left: 12px; padding-top: 3px">
-            <li style="font-size: 11px">
-              확인을 위해 이전과 동일한 비밀번호를 입력하세요.
-            </li>
-          </ul>
         </div>
         <div class="mb-3">
           <button class="btn btn-primary d-block w-100" type="submit">
-            Register Now
+            로그인
           </button>
         </div>
-        <a class="forgot" href="{% url 'accounts:login' %}">계정이 이미 있으신가요? 로그인 하러가기</a>
+        <div>
+          <a class="register" href="{% url 'accounts:register' %}"
+            >계정이 없은신가요? 회원가입을 해보세요.</a
+          >
+        </div>
       </form>
     </section>
     <!-- End: Login Form Clean --><!-- Start: Footer Basic -->
