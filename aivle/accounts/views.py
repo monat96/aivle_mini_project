@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
-from django.contrib.auth.models import User
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import RegisterForm
 from django.contrib.auth import authenticate, login
@@ -21,23 +22,29 @@ def register(request):
     context = {'form' : form}
     return render(request, 'register/register.html', context)
 
-@login_required
-def update(request):
-    if request.method == "POST": #Post -> 수정한 내용 업데이트, Get -> 기존 데이터 instance 담아서 폼을 html넘김
-        form = UserChangeForm(request.POST, instance = request.user)
-        if form.is_valid():
-            form.save()
-            return redirect('upadate/update_complete.html', request.user)
-        return render(
-            request, 
-            'update/update.html', 
-            {'form': form }
-            )
 
+@csrf_exempt
+@login_required
+def change_password(request):
+  if request.method == "POST":
+    form = PasswordChangeForm(request.user, request.POST)
+    if form.is_valid():
+      user = form.save()
+      update_session_auth_hash(request, user)
+      messages.success(request, '비밀번호가 변경되었습니다.')
+      return redirect('main')
+    else:
+      messages.error(request,'비밀번호를 확인해주세요.')
+  else:
+    form = PasswordChangeForm(request.user)
+  return render(request, 'change_password.html',{'form':form})
+
+@csrf_exempt
 @login_required
 def delete(request):
     if request.method == 'POST':
         request.user.delete()
+        messages.success(request, '그 동안 이용해주셔서 감사합니다.')
         return redirect('main')
     return render(request, 'delete/delete.html')
 
