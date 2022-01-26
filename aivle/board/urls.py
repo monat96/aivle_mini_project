@@ -4,8 +4,8 @@ from . import views
 app_name = 'board'
 urlpatterns = [
     path('main/', views.main, name='main'),
-    path('board/', views.board, name='board'),
-    # path('board/', views.boardpaging, name='board'),
+    #path('board/', views.board, name='board'),
+    path('board/', views.boardpaging, name='board'),
     # path('new/',views.new_topic,name='new_topic'),
     path('write/',views.board_write, name = 'write'), # 게시글 작성
     # path('detail/<int:pk>/',views.boarddetail, name = 'board_detail'),

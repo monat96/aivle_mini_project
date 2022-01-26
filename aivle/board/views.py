@@ -13,8 +13,8 @@ def main(request):
     return render(request,'board/main.html',{'topics':topics})
     # return render(request, 'board/main.html')
 
-def board(request):
-    return render(request, 'board/board.html')
+# def board(request):
+#     return render(request, 'board/board.html')
 
 # 게시글 작성
 @csrf_exempt
@@ -73,21 +73,21 @@ def boarddelete(request, pk):
     board.delete()
     return redirect('board_list')
 
-# def boardpaging(request) : #board 간략하게 paging
-#     now_page = request.GET.get('page')
-#     datas = Board.objects.order_by('-board_id')
+def boardpaging(request) : #board 간략하게 paging
+    now_page = request.GET.get('page',1)
+    datas = Board.objects.order_by('-board_id')
 
-#     p = Paginator(datas,10)
-#     info = p.get_page(now_page)
-#     start_page = (now_page - 1) // 10 * 10 + 1
-#     end_page = start_page + 9
-#     if end_page > p.num_pages:
-#         end_page = p.num_pages
-#     context = {
-#         'info' : info,
-#         'page_range' : range(start_page, end_page + 1)
-#     }
-#     return render(request, 'board/board.html', context)
+    p = Paginator(datas,10)
+    info = p.get_page(now_page)
+    start_page = (int(now_page) - 1) // 10 * 10 + 1
+    end_page = start_page + 9
+    if end_page > p.num_pages:
+        end_page = p.num_pages
+    context = {
+        'info' : info,
+        'page_range' : range(start_page, end_page + 1)
+    }
+    return render(request, 'board/board.html', context)
     
 
 @csrf_exempt

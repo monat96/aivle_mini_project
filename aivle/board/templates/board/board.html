@@ -89,8 +89,6 @@
               <th>제목</th>
               <th>작성자</th>
               <th>작성일</th>
-              <th>조회수</th>
-              <th>좋아요</th>
             </tr>
           </thead>
           <tbody>
@@ -100,8 +98,6 @@
               <td>{{ data.title}}</td>
               <td>{{ data.user_id}}</td>
               <td>{{ data.date}}</td>
-              <td>{{ data.hit_cnt}}</td>
-              <td>{{ data.like}}</td>
             </tr>
             {% endfor%}
           </tbody>
@@ -117,7 +113,7 @@
             >
           </li>
             {% for i in page_range %}
-              <li class="page-item"><a class="page-link" href='{% url "paging:army_shop" %}?page={{ i }}'>{{ i }}</a></li>
+              <li class="page-item"><a class="page-link" href='{% url "board:board" %}?page={{ i }}'>{{ i }}</a></li>
             {% endfor %}
           <li class="page-item">
             <a class="page-link" href="#" aria-label="Next"
