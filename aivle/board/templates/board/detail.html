@@ -16,9 +16,11 @@
                 <span class="hit_cnt">조회수 : {{ board.hit_cnt }} </span>
               </p>
                 <!-- End: Date and Author -->
+              <div style = "text-align:center">
               {% if board.image.url is not None %}
-                <img src="{{board.image.url}}"/><br>
+                 <img src="{{board.image.url}}"><br>
               {% endif %}
+              </div>
             </div>
             <!-- End: Intro --><!-- Start: Text -->
             <div class="text">
