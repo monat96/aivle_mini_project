@@ -95,7 +95,7 @@
             {% for data in info %}
             <tr>
               <td>{{ data.id}}</td>
-              <td><a href="../detail/{{ data.id}}">{{ data.title}}</a></td>
+              <td><a href="../notice_detail/{{data.id}}">{{ data.title}}</a></td>
               <td>{{ data.username}}</td>
               <td>{{ data.date}}</td>
             </tr>
@@ -113,7 +113,7 @@
             >
           </li>
             {% for i in page_range %}
-              <li class="page-item"><a class="page-link" href='{% url "board:board" %}?page={{ i }}'>{{ i }}</a></li>
+              <li class="page-item"><a class="page-link" href='{% url "board:notice" %}?page={{ i }}'>{{ i }}</a></li>
             {% endfor %}
           <li class="page-item">
             <a class="page-link" href="#" aria-label="Next"
