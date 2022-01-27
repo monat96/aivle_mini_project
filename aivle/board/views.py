@@ -21,7 +21,7 @@ def main(request):
     topics = Board.objects.all() 
     return render(request,'board/main.html',{'topics':topics})
 
-
+@login_required
 def mypage(request):
     now_page = request.GET.get('page', 1)
     user = request.user
@@ -57,7 +57,7 @@ def withdraw(request):
 
 
 @csrf_exempt
-
+@login_required
 def board_write(request):
     if request.method == 'POST':
         form = BoardWriteForm(request.POST)
