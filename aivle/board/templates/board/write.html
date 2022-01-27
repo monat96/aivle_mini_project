@@ -8,7 +8,7 @@
     {% csrf_token %} {% include "form_errors.html" %} {% bootstrap_form form %}
 
     <button class="btn btn-primary" type="submit">저장</button>
-    <button class="btn btn-primary" type="button">취소</button>
+    <button class="btn btn-primary" type="button" onClick="javascript:history.go(-1);">취소</button>
   </form>
 </section>
 {% endblock%}

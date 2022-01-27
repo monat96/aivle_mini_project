@@ -3,7 +3,7 @@ from . import views
 
 app_name = 'board'
 urlpatterns = [
-    path('main/', views.main, name='main'),
+    path('', views.main, name='main'),
     path('board/', views.boardpaging, name='board'),
     path('notice/', views.notice_boardpaging, name='notice'),
     path('write/',views.board_write, name = 'write'), # 게시글 작성
