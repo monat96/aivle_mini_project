@@ -105,10 +105,8 @@
                 <p>제목 : {{ board.title }}</p>
                 <p>작성자 : {{ board.user }}</p>
                 <p>글쓴 날짜 : {{ board.date}}</p>
-<<<<<<< HEAD
                 <p>글 내용 : {{ board.content }}</p>
-                <img src="{{board.image.url}}"/>
-=======
+                <img src="{{board.image.url}}"/><br>
                 <P>조회수 : {{ board.hit_cnt}}</p>
                 <p>ㅡㅡㅡㅡㅡㅡㅡ</p>
                 {% for comment in board.comment_set.all %}
@@ -143,7 +141,6 @@
                 </form>
               </div>
               {% endblock %}
->>>>>>> 8787f10067a8758b54a845c465325cb6c550058d
                 <a href="#" class="btn btn-primary" type="button">이전</a>
                 <a href="#" class="btn btn-primary" type="button">다음</a>
                 {% if user.username == data.user_id %}
