@@ -5,7 +5,9 @@ class BoardWriteForm(forms.ModelForm):
     
     class Meta:
         model = Board
-        fields = ('title','content', 'image')
+        fields = ('title','content', 'image',)
+
+
 
 
 class CommentForm(forms.ModelForm):

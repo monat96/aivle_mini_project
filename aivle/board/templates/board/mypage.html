@@ -31,6 +31,7 @@
                   <th>순번</th>
                   <th>제목</th>
                   <th>작성자</th>
+                  <th>조회수</th>
                   <th>작성일</th>
                 </tr>
               </thead>
@@ -40,6 +41,7 @@
                   <td>{{ data.id}}</td>
                   <td><a href="../detail/{{ data.id}}">{{ data.title}}</a></td>
                   <td>{{ data.user_id}}</td>
+                  <td>{{ data.hit_cnt}}</td>
                   <td>{{ data.date}}</td>
                 </tr>
                 {% endfor%}
