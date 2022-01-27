@@ -23,7 +23,7 @@
             <!-- End: Intro --><!-- Start: Text -->
             <div class="text">
                 <hr>
-                <p>글 내용 : {{ board.content }}</p>
+                <p>{{ board.content }}</p>
                 <hr>
                 {% for comment in board.comment_set.all %}
                 <div class="card my-3">

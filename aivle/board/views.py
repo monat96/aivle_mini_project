@@ -156,7 +156,7 @@ def notice_detail(request, pk):
 def download(request):
     id = request.GET.get('id')
     uploadFile = Board.objects.get(id=id)
-    filepath = str(settings.BASE_DIR) + ('/media/%s' % uploadFile.image.name)
+    filepath = str(settings.BASE_DIR) + ('/media/img/%s' % uploadFile.image.name)
     filename = os.path.basename(filepath)
     with open(filepath, 'rb') as f:
         response = HttpResponse(f, content_type='application/octet-stream')
