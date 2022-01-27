@@ -1,17 +1,18 @@
 from django.db import models
 from django.utils.timezone import now
 from django.conf import settings
+from django.contrib.auth.models import User
 
 
 class Board(models.Model):
-    # user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name = "brduser_id", null=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=256, null=False)
     content = models.TextField(null=False)
     image = models.FileField(null = True, blank = True, upload_to='img/')
     date = models.DateTimeField(default=now, editable=False, null=False)
     # like = models.IntegerField(default=0, null=False)
     # dislike = models.IntegerField(default=0, null=False)
-    # hit_cnt = models.IntegerField(default=0, null=False)
+    hit_cnt = models.IntegerField(default=0, null=False)
 
     # def __str__(self):
     #     return self.title
@@ -47,6 +48,6 @@ class Notice(models.Model):
     title = models.CharField(max_length= 45)
     content = models.CharField(max_length= 400)
     date = models.DateTimeField(auto_now_add=True)
-    hit_cnt = models.IntegerField()
+    hit_cnt = models.IntegerField(default=now, editable=False, null=False)
 
     db_table = 'notice'

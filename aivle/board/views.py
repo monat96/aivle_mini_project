@@ -5,13 +5,11 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
 import os
 from config import settings
-from django.utils import timezone
 from django.http import HttpResponse
-
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 # from django.core import serializers
 # from django.core.serializers.json import DjangoJSONEncoder
@@ -20,16 +18,14 @@ from django.contrib.auth.forms import PasswordChangeForm
 
 
 def main(request):
-    topics = Board.objects.all()
-    return render(request, 'main.html', {'topics': topics})
+    topics = Board.objects.all() 
+    return render(request,'board/main.html',{'topics':topics})
 
 
-@csrf_exempt
-@login_required
 def mypage(request):
     now_page = request.GET.get('page', 1)
-    user_id = request.user
-    datas = Board.objects.filter(user_id_id=user_id).order_by('-board_id')
+    user = request.user
+    datas = Board.objects.filter(user_id = user).order_by('-id')
 
     paginator = Paginator(datas, 10)
     info = paginator.get_page(now_page)
@@ -62,13 +58,13 @@ def withdraw(request):
 
 
 @csrf_exempt
-@login_required
+
 def board_write(request):
     if request.method == 'POST':
         form = BoardWriteForm(request.POST)
         if form.is_valid():
             writing = form.save(commit=False)
-            writing.user_id = request.user
+            writing.user = request.user
             writing.save()
             return redirect('board:board')
     else:
@@ -84,7 +80,11 @@ def board_detail(request, pk):
     context = {
         'board': board,
     }
-    return render(request, 'board:board_detail', context)
+    board.hit_cnt += 1
+    board.save()
+
+    return render(request, 'board/detail.html', context)
+
 
 
 @csrf_exempt
@@ -93,7 +93,7 @@ def boardedit(request, pk):
     if request.method == "POST":
         board.title = request.POST['title']
         board.content = request.POST['content']
-        board.image = request.POST['image']
+        board.image = request.FILES['image']
         board.save()
         return redirect('board_list')
     else:
@@ -108,9 +108,10 @@ def boarddelete(request, pk):
     return redirect('board_list')
 
 
-def boardpaging(request):  # board 간략하게 paging
-    now_page = request.GET.get('page', 1)
-    datas = Board.objects.order_by('-board_id')
+@csrf_exempt
+def boardpaging(request) : #board 간략하게 paging
+    now_page = request.GET.get('page',1)
+    datas = Board.objects.order_by('-id')
 
     p = Paginator(datas, 10)
     info = p.get_page(now_page)
@@ -124,6 +125,23 @@ def boardpaging(request):  # board 간략하게 paging
     }
     return render(request, 'board/board.html', context)
 
+    
+@csrf_exempt    
+def notice_boardpaging(request):
+    now_page = request.GET.get('page',1)
+    datas =  Notice.objects.order_by('-id')
+
+    p = Paginator(datas,10)
+    info = p.get_page(now_page)
+    start_page = (int(now_page) - 1) // 10 * 10 + 1
+    end_page = start_page + 9
+    if end_page > p.num_pages:
+        end_page = p.num_pages
+    context = {
+        'info' : info,
+        'page_range' : range(start_page, end_page + 1)
+    }
+    return render(request, 'board/notice.html', context) #notice.html => board에서 공지사항이라고만 수정하고 글쓰기 버튼 없앤 거 
 
 @csrf_exempt
 def notice_detail(request, pk):
@@ -131,12 +149,15 @@ def notice_detail(request, pk):
     context = {
         'notice': notice,
     }
+    notice.hit_cnt += 1
+    notice.save()
+
     return render(request, 'board/notice_detail.html', context)
 
 
 @csrf_exempt
 def download(request):
-    id = request.GET.get('board_id')
+    id = request.GET.get('id')
     uploadFile = Board.objects.get(id=id)
     filepath = str(settings.BASE_DIR) + ('/media/%s' % uploadFile.image.name)
     filename = os.path.basename(filepath)
