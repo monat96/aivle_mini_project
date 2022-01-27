@@ -47,7 +47,6 @@ def mypage(request):
 def withdraw(request):
     if request.method == 'POST':
         password = request.POST.get('password', '')
-        print(password)
         user = request.user
         if check_password(password, user.password):
             user.delete()
