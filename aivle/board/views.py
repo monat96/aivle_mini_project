@@ -16,7 +16,7 @@ def main(request):
 
 def mypage(request):
     now_page = request.GET.get('page', 1)
-    user = request.user.get_id
+    user = request.user
     datas = Board.objects.filter(user_id = user).order_by('-id')
 
     paginator = Paginator(datas, 10)
@@ -53,7 +53,7 @@ def board_write(request):
         form = BoardWriteForm(request.POST)
         if form.is_valid():
             writing = form.save(commit=False)
-            writing.user = request.user.get_id
+            writing.user = request.user
             writing.save()
             return redirect('board:board')
     else:
@@ -72,7 +72,7 @@ def board_detail(request, pk):
     board.hit_cnt += 1
     board.save()
 
-    return render(request, 'board:board_detail', context)
+    return render(request, 'board/detail.html', context)
 
 
 @csrf_exempt
