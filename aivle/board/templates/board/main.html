@@ -30,8 +30,10 @@
     <!-- Start: Navigation Clean -->
     <nav class="navbar navbar-light navbar-expand-lg navigation-clean">
       <div class="container">
-        <a class="navbar-brand" href="{% url 'board:main' %}">NFT 커뮤니티</a
-        ><button
+        <a class="navbar-brand" href="{% url 'board:main' %}">NFT 커뮤니티</a>
+        <nav class="navbar navbar-light navbar-expand-md">
+          <div class="container-fluid">
+          <button
           data-bs-toggle="collapse"
           class="navbar-toggler"
           data-bs-target="#navcol-1"
@@ -39,8 +41,6 @@
           <span class="visually-hidden">Toggle navigation</span
           ><span class="navbar-toggler-icon"></span>
         </button>
-        <nav class="navbar navbar-light navbar-expand-md">
-          <div class="container-fluid">
             <button
               data-bs-toggle="collapse"
               class="navbar-toggler"
@@ -70,7 +70,7 @@
               <a class="nav-link" href="#"><i class="fa fa-search"></i></a>
             </li>
             {% if user.is_authenticated %}
-            <li class="nav-item"><a class="nav-link" href="#">{{user.username}}님</a></li>
+            <li class="nav-item"><a class="nav-link">{{user.username}}님</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'accounts:logout' %}">logout</a></li>
             {% else %}
             <li class="nav-item"><a class="nav-link" href="{% url 'accounts:login' %}">login</a></li>

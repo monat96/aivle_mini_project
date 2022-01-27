@@ -51,7 +51,7 @@
                   <a class="nav-link" href="{% url 'board:board' %}">게시판</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Third Item</a>
+                  <a class="nav-link" href="{% url 'board:mypage' %}">마이페이지</a>
                 </li>
               </ul>
             </div>
@@ -66,7 +66,7 @@
             <li class="nav-item">
               <a class="nav-link" href="#"><i class="fa fa-search"></i></a>
               {% if user.is_authenticated %}
-              <li class="nav-item"><a class="nav-link" href="#">{{user.username}}님</a></li>
+              <li class="nav-item"><a class="nav-link">{{user.username}}님</a></li>
               <li class="nav-item"><a class="nav-link" href="{% url 'accounts:logout' %}">logout</a></li>
               {% else %}
               <li class="nav-item"><a class="nav-link" href="{% url 'accounts:login' %}">login</a></li>
@@ -84,8 +84,9 @@
         {% bootstrap_form form %}
         
         <button class="btn btn-primary" type="submit">저장</button>
-        <button class="btn btn-primary" type="button">취소</button>
-
+        <a href= "{% url 'board:board' %}"> 
+          <button class="btn btn-primary" type="button">취소</button>
+        </a>
       </form>
     </section>
     <!-- Start: Footer Basic -->

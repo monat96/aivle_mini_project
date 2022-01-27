@@ -66,7 +66,7 @@
               <a class="nav-link" href="#"><i class="fa fa-search"></i></a>
             </li>
               {% if user.is_authenticated %}
-              <li class="nav-item"><a class="nav-link" href="#">{{user.username}}님</a></li>
+              <li class="nav-item"><a class="nav-link">{{user.username}}님</a></li>
               <li class="nav-item"><a class="nav-link" href="{% url 'accounts:logout' %}">logout</a></li>
               {% else %}
               <li class="nav-item"><a class="nav-link" href="{% url 'accounts:login' %}">login</a></li>
