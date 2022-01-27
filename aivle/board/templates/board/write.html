@@ -79,7 +79,7 @@
     </nav>
     <!-- End: Navigation Clean -->
     <section style = "padding: 0 50px;">
-      <form method="post">
+      <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {% include "form_errors.html" %}
         {% bootstrap_form form %}

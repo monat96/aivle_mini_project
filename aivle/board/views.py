@@ -60,7 +60,7 @@ def withdraw(request):
 @login_required
 def board_write(request):
     if request.method == 'POST':
-        form = BoardWriteForm(request.POST)
+        form = BoardWriteForm(request.POST,request.FILES)
         if form.is_valid():
             writing = form.save(commit=False)
             writing.user = request.user

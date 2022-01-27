@@ -104,8 +104,11 @@
                 <p>ㅡㅡㅡㅡㅡㅡㅡ</p>
                 <p>제목 : {{ board.title }}</p>
                 <p>작성자 : {{ board.user }}</p>
-                <p>글 내용 : {{ board.content }}</p>
                 <p>글쓴 날짜 : {{ board.date}}</p>
+                <p>글 내용 : {{ board.content }}</p>
+                {% if board.image.url is not None %}
+                  <img src="{{board.image.url}}"/><br>
+                {% endif %}
                 <P>조회수 : {{ board.hit_cnt}}</p>
                 <p>ㅡㅡㅡㅡㅡㅡㅡ</p>
                 {% for comment in board.comment_set.all %}
@@ -139,7 +142,6 @@
                   <input type="submit" value="댓글등록" class="btn btn-primary">
                 </form>
               </div>
-              {% endblock %}
                 <a href="#" class="btn btn-primary" type="button">이전</a>
                 <a href="#" class="btn btn-primary" type="button">다음</a>
                 {% if user.username == data.user_id %}
