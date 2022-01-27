@@ -148,8 +148,6 @@ def notice_detail(request, pk):
     context = {
         'notice': notice,
     }
-    notice.hit_cnt += 1
-    notice.save()
 
     return render(request, 'board/notice_detail.html', context)
 

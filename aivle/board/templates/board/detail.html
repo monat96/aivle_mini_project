@@ -106,7 +106,40 @@
                 <p>작성자 : {{ board.user }}</p>
                 <p>글 내용 : {{ board.content }}</p>
                 <p>글쓴 날짜 : {{ board.date}}</p>
+                <P>조회수 : {{ board.hit_cnt}}</p>
                 <p>ㅡㅡㅡㅡㅡㅡㅡ</p>
+                {% for comment in board.comment_set.all %}
+                <div class="card my-3">
+                  <div class="card-body">
+                    <div class="card-text" style="white-space: pre-line;">
+                      {{ comment.content }}
+                    </div>
+                  </div>
+                </div>
+                {% endfor%}
+                <form action="{% url 'board:comment' board.id %}" method="post" class="my-3">
+                  {% csrf_token %}
+                  
+                  <!-- 오류표시 Start -->
+                  {% if form.errors %}
+                  <div class="alert alert-danger" role="alert">
+                    {% for field in form %}
+                      {% if field.errors %}
+                        <strong>{{ field.label }}</strong>
+                        {{ field.errors }}
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                  {% endif %}
+                  <!-- 오류표시 End -->
+              
+                  <div class="form-group">
+                    <textarea name="content" id="content" class="form-control" rows="10"></textarea>
+                  </div>
+                  <input type="submit" value="댓글등록" class="btn btn-primary">
+                </form>
+              </div>
+              {% endblock %}
                 <a href="#" class="btn btn-primary" type="button">이전</a>
                 <a href="#" class="btn btn-primary" type="button">다음</a>
                 {% if user.username == data.user_id %}
