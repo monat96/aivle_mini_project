@@ -128,7 +128,7 @@ def boardpaging(request) : #board 간략하게 paging
 @csrf_exempt    
 def notice_boardpaging(request):
     now_page = request.GET.get('page',1)
-    datas =  Notice.objects.order_by('-id')
+    datas =  Notice.objects.all().order_by('-id')
 
     p = Paginator(datas,10)
     info = p.get_page(now_page)
@@ -148,8 +148,6 @@ def notice_detail(request, pk):
     context = {
         'notice': notice,
     }
-    notice.hit_cnt += 1
-    notice.save()
 
     return render(request, 'board/notice_detail.html', context)
 

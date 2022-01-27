@@ -47,7 +47,6 @@ class Comment(models.Model):
 class Notice(models.Model):
     title = models.CharField(max_length= 45)
     content = models.CharField(max_length= 400)
-    date = models.DateTimeField(auto_now_add=True)
-    hit_cnt = models.IntegerField(default=now, editable=False, null=False)
-
+    date = models.DateTimeField(default=now, editable=False, null=False)
+    username= models.CharField(max_length= 45, default="관리자")
     db_table = 'notice'
