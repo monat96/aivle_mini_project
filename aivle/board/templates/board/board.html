@@ -95,7 +95,7 @@
             {% for data in info %}
             <tr>
               <td>{{ data.id}}</td>
-              <td>{{ data.title}}</td>
+              <td><a href="../detail/{{ data.id}}">{{ data.title}}</a></td>
               <td>{{ data.user}}</td>
               <td>{{ data.date}}</td>
             </tr>
