@@ -20,29 +20,3 @@ def register(request):
     
     context = {'form' : form}
     return render(request, 'register.html', context)
-
-
-@csrf_exempt
-def change_password(request):
-  if request.method == "POST":
-    form = PasswordChangeForm(request.user, request.POST)
-    if form.is_valid():
-      user = form.save()
-      update_session_auth_hash(request, user)
-      messages.success(request, '비밀번호가 변경되었습니다.')
-      return redirect('board/main.html')
-    else:
-      messages.error(request,'비밀번호를 확인해주세요.')
-  else:
-    form = PasswordChangeForm(request.user)
-  return render(request, 'update/change_password.html',{'form':form})
-
-
-def detail(request, pk):
-    User = get_user_model()
-    user = get_object_or_404(User, pk=pk)
-    context = {
-        'user': user
-    }
-    return render(request, 'accounts/detail.html', context)
-
