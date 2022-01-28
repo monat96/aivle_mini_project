@@ -24,8 +24,9 @@ class Board(models.Model):
 
 
 class Comment(models.Model):
-    board = models.ForeignKey(Board, on_delete=models.CASCADE, verbose_name = "cmtboard_id")
-    # user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name = "cmtuser_id")
+    board = models.ForeignKey(Board, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateTimeField(default=now, editable=False, null=False)
     content = models.TextField()
     # like = models.IntegerField(default=0)
     # dislike = models.IntegerField(default=0)
@@ -49,4 +50,5 @@ class Notice(models.Model):
     content = models.CharField(max_length= 400)
     date = models.DateTimeField(default=now, editable=False, null=False)
     username= models.CharField(max_length= 45, default="관리자")
-    db_table = 'notice'
+    class Meta:
+        db_table = 'notice'

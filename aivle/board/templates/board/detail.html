@@ -1,72 +1,65 @@
 {% extends "board/base.html" %}
 {% load static %}
+{% load bootstrap4 %}
 {% block content %}
 <!-- Start: Article Clean -->
-    <section class="article-clean">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2">
-            <!-- Start: Intro -->
-            <div class="intro">
-              <h1 class="text-center">{{ board.title }}</h1>
-              <!-- Start: Date and Author -->
-              <p class="text-center">
-                <span class="by"> by {{ board.user }} </span>
-                <span class="date"> {{ board.date }} </span>
-                <span class="hit_cnt">조회수 : {{ board.hit_cnt }} </span>
-              </p>
-                <!-- End: Date and Author -->
-              <div style = "text-align:center">
-              {% if board.image.url is not None %}
-                 <img src="{{board.image.url}}"><br>
-              {% endif %}
-              </div>
-            </div>
-            <!-- End: Intro --><!-- Start: Text -->
-            <div class="text">
-                <hr>
-                <p>{{ board.content }}</p>
-                <hr>
-                {% for comment in board.comment_set.all %}
-                <div class="card my-3">
-                  <div class="card-body">
-                    <div class="card-text" style="white-space: pre-line;">
-                      {{ comment.content }}
-                    </div>
-                  </div>
-                </div>
-                {% endfor%}
-                <form action="{% url 'board:comment' board.id %}" method="post" class="my-3">
-                  {% csrf_token %}
-                  
-                  <!-- 오류표시 Start -->
-                  {% if form.errors %}
-                  <div class="alert alert-danger" role="alert">
-                    {% for field in form %}
-                      {% if field.errors %}
-                        <strong>{{ field.label }}</strong>
-                        {{ field.errors }}
-                      {% endif %}
-                    {% endfor %}
-                  </div>
-                  {% endif %}
-                  <!-- 오류표시 End -->
-              
-                  <div class="form-group">
-                    <textarea name="content" id="content" class="form-control" rows="10"></textarea>
-                  </div>
-                  <input type="submit" value="댓글등록" class="btn btn-primary">
-                </form>
-              </div>
-                {% if user.username == data.user_id %}
-                <a href="#" class="btn btn-primary" type="button">수정</a>
-                {% else %}
-                {% endif%}
-              </div>
-            <!-- End: Text -->
+<section class="article-clean">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2">
+        <!-- Start: Intro -->
+        <div class="intro">
+          <h1 class="text-center">{{ board.title }}</h1>
+          <!-- Start: Date and Author -->
+          <p class="text-center">
+            <span class="by"> by {{ board.user }} </span>
+            <span class="date"> {{ board.date }} </span>
+            <span class="hit_cnt">조회수 : {{ board.hit_cnt }} </span>
+          </p>
+          <!-- End: Date and Author -->
+          <div style="text-align: center">
+            {% if board.image.url is not None %}
+            <img src="{{board.image.url}}" /><br />
+            {% endif %}
           </div>
         </div>
+        <!-- End: Intro --><!-- Start: Text -->
+        <div class="text">
+          <br>
+          <div style='text-align: center'> <p><b>게시글</p></b> </div>
+          <hr />
+          <div class="card my-3">
+            <div class="card-body">
+              <div class="card-text" style="white-space: pre-line">
+                {{ board.content }}
+              </div>
+            </div>
+          </div>
+          <hr />
+          <div style='text-align: center'> <p><b>댓글</p></b> </div>
+          <hr />
+          {% for comment in comments %}
+          <div class="card my-3">
+            <div class="card-body">
+              <div class="card-text" style="white-space: pre-line">
+                <span>작성자 : {{ comment.author }} </span>
+                <span>내용 :  {{ comment.content }} </span>
+                <span>작성일 : {{ comment.date }} </span>
+              </div>
+            </div>
+          </div>
+          {% endfor%}
+          <form method="POST" class="my-3">
+            {% csrf_token %}
+            {% include "form_errors.html" %}
+            {% bootstrap_form form %}
+            <input type="submit" value="댓글등록" class="btn btn-primary" />
+          </form>
+        </div>
+        <!-- End: Text -->
       </div>
-    </section>
-    <!-- End: Article Clean -->
-  {% endblock %}
+    </div>
+  </div>
+</section>
+<!-- End: Article Clean -->
+{% endblock %}

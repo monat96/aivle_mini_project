@@ -11,10 +11,6 @@ from django.contrib.auth.hashers import check_password
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
-# from django.core import serializers
-# from django.core.serializers.json import DjangoJSONEncoder
-# from django.http import HttpResponse
-# import json
 
 
 def main(request):
@@ -76,8 +72,22 @@ def board_write(request):
 @csrf_exempt
 def board_detail(request, pk):
     board = get_object_or_404(Board, pk=pk)
+    comments = Comment.objects.filter(board = pk)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.board = board
+            comment.author = request.user
+            comment.save()
+            return redirect('board:board_detail', pk)
+    else:
+        form = CommentForm()
+    
     context = {
+        'form' : form,
         'board': board,
+        'comments':comments
     }
     board.hit_cnt += 1
     board.save()
@@ -94,17 +104,18 @@ def boardedit(request, pk):
         board.content = request.POST['content']
         board.image = request.FILES['image']
         board.save()
-        return redirect('board_list')
+        return redirect('board:board')
     else:
         boardForm = BoardWriteForm
         return render(request, 'board/update.html', {'boardForm': boardForm})
 
 
 @csrf_exempt
+@login_required
 def boarddelete(request, pk):
     board = Board.objects.get(board_id=pk)
     board.delete()
-    return redirect('board_list')
+    return redirect('board:board')
 
 
 @csrf_exempt
@@ -173,12 +184,12 @@ def comment(request, board_id):
             comment = form.save(commit=False)
             comment.board = board
             comment.save()
-            return redirect('board:board_detail', board_id=board_id)
+            return redirect('board:detail', board_id=board_id)
     else:
         form = CommentForm()
 
     context = {'board': board, 'form': form}
-    return render(request, 'board:board_detail', context)
+    return render(request, 'board:detail', context)
 
 
 @login_required
