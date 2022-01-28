@@ -6,10 +6,11 @@ from django.contrib import messages
 from .forms import RegisterForm
 from django.contrib.auth import get_user_model
 
-
 # Create your views here.
 @csrf_exempt
 def register(request):
+    if request.user.is_authenticated:
+      return redirect('board:main')
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
