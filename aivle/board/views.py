@@ -46,7 +46,6 @@ def withdraw(request):
         user = request.user
         if check_password(password, user.password):
             user.delete()
-            messages.success(request, '그 동안 이용해주셔서 감사합니다.')
             return redirect('board:main')
 
     return render(request, 'board/withdraw.html')
@@ -87,7 +86,8 @@ def board_detail(request, pk):
     context = {
         'form' : form,
         'board': board,
-        'comments':comments
+        'comments':comments,
+        'pk':pk
     }
     board.hit_cnt += 1
     board.save()
@@ -164,15 +164,17 @@ def notice_detail(request, pk):
 
 
 @csrf_exempt
-def download(request):
-    id = request.GET.get('id')
-    uploadFile = Board.objects.get(id=id)
-    filepath = str(settings.BASE_DIR) + ('/media/img/%s' % uploadFile.image.name)
-    filename = os.path.basename(filepath)
-    with open(filepath, 'rb') as f:
-        response = HttpResponse(f, content_type='application/octet-stream')
-        response['Content-Disposition'] = 'attachment; filename=%s' % filename
-        return response
+def download(request, pk):
+    board = get_object_or_404(Board, pk = pk)
+    img = board.image
+    imgPath = os.path.join(settings.MEDIA_ROOT, str(img))
+    imgName = os.path.basename(imgPath)
+    with open(imgPath, 'rb') as f:
+        response = HttpResponse(
+            f, content_type = 'application/octet-stream'
+        )
+        response['Content-Disposition'] = 'attachment; filename="{}"'.format(imgName)
+    return response
 
 
 @csrf_exempt

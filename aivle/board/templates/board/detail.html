@@ -19,7 +19,13 @@
           <!-- End: Date and Author -->
           <div style="text-align: center">
             {% if board.image.url is not None %}
-            <img src="{{board.image.url}}" /><br />
+            <img src="{{board.image.url}}" />
+            <br />
+            <br />
+            <a href="../download/{{pk}}" 
+            class="btn btn-primary" 
+            type="button">
+            다운로드</a>
             {% endif %}
           </div>
         </div>
